@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { addToDb, getStoredCart } from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css'
 
 const Shop = () => {
-    const [products, setProducts] = useState([]);
+    const products = useLoaderData();
 
-    useEffect(() => {
-        fetch('products.json')
-            .then(res => res.json())
-            .then(data => setProducts(data))
-    }, [])
-
+    /*  const [products, setProducts] = useState([]);
+ 
+     useEffect(() => {
+         fetch('products.json')
+             .then(res => res.json())
+             .then(data => setProducts(data))
+     }, []) */
+    //showing data from  local storage
     useEffect(() => {
         const storedCart = getStoredCart();
         const savedCart = [];
@@ -26,7 +29,7 @@ const Shop = () => {
         }
         setCart(savedCart);
     }, [products])
-
+    //shoring data in localstorage
     const [cart, setCart] = useState([]);
     const addToCart = (selectedProduct) => {
         let newCart = [];
