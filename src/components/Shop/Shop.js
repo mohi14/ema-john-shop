@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
-import { addToDb, getStoredCart } from '../../utilities/fakedb';
+import { addToDb, deleteShoppingCart, getStoredCart } from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css'
 
 const Shop = () => {
     const products = useLoaderData();
+
 
     /*  const [products, setProducts] = useState([]);
  
@@ -15,6 +16,13 @@ const Shop = () => {
              .then(res => res.json())
              .then(data => setProducts(data))
      }, []) */
+
+    //shoring data in localstorage
+    const [cart, setCart] = useState([]);
+    const clearCart = () => {
+        setCart([]);
+        deleteShoppingCart();
+    }
     //showing data from  local storage
     useEffect(() => {
         const storedCart = getStoredCart();
@@ -29,8 +37,9 @@ const Shop = () => {
         }
         setCart(savedCart);
     }, [products])
-    //shoring data in localstorage
-    const [cart, setCart] = useState([]);
+
+
+
     const addToCart = (selectedProduct) => {
         let newCart = [];
         const exists = cart.find(product => product.id === selectedProduct.id);
@@ -60,7 +69,10 @@ const Shop = () => {
                 }
             </div>
             <div className='oder-summery'>
-                <Cart cart={cart}></Cart>
+                <Cart
+                    cart={cart}
+                    clearCart={clearCart}
+                ></Cart>
             </div>
         </div>
     );
